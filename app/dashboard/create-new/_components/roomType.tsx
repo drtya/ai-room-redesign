@@ -6,10 +6,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-function RoomType({ selectedRoomType }) {
+function RoomType({
+  selectedRoomType,
+  fieldError,
+}: {
+  selectedRoomType: any;
+  fieldError: string[];
+}) {
   return (
     <div>
-      <label htmlFor="" className="text-gray-500">
+      <label
+        htmlFor=""
+        className={`text-gray-500 ${fieldError && 'text-red-400'}`}
+      >
         Select Room Type *
       </label>
       <Select onValueChange={(value) => selectedRoomType(value)}>
@@ -23,6 +32,7 @@ function RoomType({ selectedRoomType }) {
           <SelectItem value="Office">Office</SelectItem>
         </SelectContent>
       </Select>
+      {fieldError && <p className="text-sm text-red-500 mt-3">{fieldError[0]}</p>}
     </div>
   );
 }

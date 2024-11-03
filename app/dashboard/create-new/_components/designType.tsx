@@ -1,8 +1,18 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-function DesignType({ selectedDesignType }) {
-  const designs = [
+interface IType {
+  name: string;
+  image: string;
+}
+function DesignType({
+  selectedDesignType,
+  fieldError,
+}: {
+  selectedDesignType: any;
+  fieldError: string[];
+}) {
+  const designs: IType[] = [
     {
       name: 'Modern',
       image: '/designTypes/modern.jpg',
@@ -25,14 +35,14 @@ function DesignType({ selectedDesignType }) {
     },
   ];
 
-  const [selectedOptions, setSelectedOption] = useState();
-  const selectHandler = (design) => {
+  const [selectedOptions, setSelectedOption] = useState<string>();
+  const selectHandler = (design: IType) => {
     selectedDesignType(design.name);
     setSelectedOption(design.name);
   };
   return (
     <div>
-      <label className="text-gray-500">Select Interior Design Type</label>
+      <label className={`text-gray-500 ${fieldError &&'text-red-400'}`}>Select Interior Design Type *</label>
       <div className="grid grid-cols-2 mt-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {designs.map((design, index) => (
           <div key={index} onClick={() => selectHandler(design)}>
@@ -50,6 +60,7 @@ function DesignType({ selectedDesignType }) {
           </div>
         ))}
       </div>
+      {fieldError && <p className="text-sm text-red-500 mt-3">{fieldError[0]}</p>}
     </div>
   );
 }

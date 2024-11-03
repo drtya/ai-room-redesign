@@ -1,9 +1,9 @@
 import { db } from '@/config/db';
 import { Users } from '@/config/schema';
 import { eq } from 'drizzle-orm';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   const { user } = await req.json();
   try {
     const userInfo = await db
@@ -18,8 +18,10 @@ export async function POST(req) {
           email: user?.primaryEmailAddress.emailAddress,
           imageUrl: user?.imageUrl,
         })
-        .returning({ Users });
-      return NextResponse.json({ result: saveResult[0].Users });
+        .returning({ id: Users.id });
+        console.log(saveResult[0]);
+        
+      return NextResponse.json({ result: saveResult[0] });
     }
     return NextResponse.json({ result: userInfo[0] });
   } catch (error) {

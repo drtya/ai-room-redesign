@@ -1,17 +1,30 @@
 'use client';
 import { UploadImageIcon } from '@/public/icons';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
-function ImageSelection({ selectedImage }) {
-  const [file, setFile] = useState();
-  const onFileSelected = (event) => {
-    setFile(event.target.files[0]);
-    selectedImage(event.target.files[0]);
+function ImageSelection({
+  selectedImage,
+  fieldError,
+}: {
+  selectedImage: any;
+  fieldError?: string[];
+}) {
+  const [file, setFile] = useState<File>();
+  const onFileSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target) {
+      setFile(event.target.files[0]);
+      selectedImage(event.target.files[0]);
+    }
   };
   return (
     <div>
-      <label htmlFor="upload-image">Select image of your room</label>
+      <label
+        htmlFor="upload-image"
+        className={`text-gray-500 ${fieldError && 'text-red-400'}`}
+      >
+        Select image of your room *
+      </label>
       <div className="mt-3">
         <label htmlFor="upload-image">
           <div
@@ -34,6 +47,10 @@ function ImageSelection({ selectedImage }) {
             )}
           </div>
         </label>
+        {fieldError && (
+          <p className="text-sm text-red-500 mt-3">{fieldError[0]}</p>
+        )}
+
         <input
           onChange={onFileSelected}
           type="file"

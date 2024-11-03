@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import Listing from './_components/listing'
 
 function Dashboard() {

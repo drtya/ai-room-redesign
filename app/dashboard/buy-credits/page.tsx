@@ -1,25 +1,34 @@
 'use client';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import {
+  DISPATCH_ACTION,
+  PayPalButtons,
+  usePayPalScriptReducer,
+} from '@paypal/react-paypal-js';
 import PaymentCard from './_components/paymentCard';
 import { useContext, useEffect, useState } from 'react';
 import { db } from '@/config/db';
 import { Users } from '@/config/schema';
 import { UserDetailContext } from '../../_context/UserDetailContext';
 import { useRouter } from 'next/navigation';
+import { IUser } from '@/config/types';
 
+export interface IPrice {
+  credits: number;
+  price: number;
+}
 function Page() {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [{ options }, dispatch] = usePayPalScriptReducer();
-  const [selectedOptions, setSelectedOptions] = useState();
+  const [selectedOptions, setSelectedOptions] = useState<IPrice | null>(null);
   useEffect(() => {
     dispatch({
-      type: 'resetOptions',
+      type: DISPATCH_ACTION.RESET_OPTIONS,
       value: {
         ...options,
       },
     });
   }, [selectedOptions]);
-  const price = [
+  const price: IPrice[] = [
     {
       credits: 5,
       price: 0.99,
@@ -42,17 +51,17 @@ function Page() {
     },
   ];
   console.log(selectedOptions);
-  const router = useRouter()
+  const router = useRouter();
   const onPaymentSuccess = async () => {
     const result = await db
       .update(Users)
       .set({
         credits: userDetail?.credits + selectedOptions.credits,
-      })
+      } as IUser)
       .returning({ id: Users.id });
-      if (result) {
-        router.push('/dashboard')
-      }
+    if (result) {
+      router.push('/dashboard');
+    }
   };
   return (
     <div>
@@ -76,15 +85,15 @@ function Page() {
             className="w-full"
             onApprove={onPaymentSuccess}
             onCancel={() => {
-              selectedOptions(null);
+              setSelectedOptions(null);
             }}
             style={{ layout: 'vertical' }}
             createOrder={(data, actions) => {
-              return actions?.order.create({
+              return (actions as any).order.create({
                 purchase_units: [
                   {
                     amount: {
-                      value: selectedOptions?.price?.toFixed(2),
+                      value: selectedOptions.price.toFixed(2),
                       currency_code: 'USD',
                     },
                   },
