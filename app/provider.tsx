@@ -1,11 +1,11 @@
 'use client';
 import { useUser } from '@clerk/nextjs';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { UserDetailContext } from './_context/UserDetailContext';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-function Provider({ children }) {
+function Provider({ children }:{children:ReactNode}) {
   const { user } = useUser();
   const [userDetail, setUserDetail] = useState([]);
   useEffect(() => {

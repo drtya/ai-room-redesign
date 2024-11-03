@@ -1,8 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { memo } from 'react';
+import { Dispatch, memo, SetStateAction } from 'react';
+import { IPrice } from '../page';
 
-const PaymentCard = memo(function ({ paymentInfo, setSelectedOptions }) {
+const PaymentCard = memo(function ({
+  paymentInfo,
+  setSelectedOptions,
+}: {
+  paymentInfo: IPrice|null;
+  setSelectedOptions: Dispatch<SetStateAction<IPrice|null>>;
+}) {
   return (
     <div
       className="rounded-md p-5

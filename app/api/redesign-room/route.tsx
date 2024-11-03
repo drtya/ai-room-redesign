@@ -5,6 +5,7 @@ import Replicate from 'replicate';
 import { storage } from '@/config/firebaseConfig';
 import { db } from '@/config/db';
 import { AiGeneratedImage } from '@/config/schema';
+import { IAiGeneratedImage } from '@/config/types';
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY,
@@ -36,7 +37,7 @@ export async function POST(req) {
         orgImage: imageUrl,
         aiImage: downloadUrl,
         userEmail: userEmail,
-      })
+      } as IAiGeneratedImage)
       .returning({ id: AiGeneratedImage.id });
     return NextResponse.json({ result: downloadUrl });
   } catch (error) {

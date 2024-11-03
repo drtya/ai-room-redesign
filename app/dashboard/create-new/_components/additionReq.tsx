@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 
-function AdditionReq({ additionalRequirementInput }) {
-  const changeHandler = (event) => {
+function AdditionReq({
+  additionalRequirementInput,
+}: {
+  additionalRequirementInput: any;
+}) {
+  const changeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     additionalRequirementInput(event.target.value);
   };
   return (

@@ -8,10 +8,11 @@ import { AiGeneratedImage } from '@/config/schema';
 import { eq } from 'drizzle-orm';
 import RoomDesignCard from './roomDesignCard';
 import { UserDetailContext } from '@/app/_context/UserDetailContext';
+import { IAiGeneratedImage } from '@/config/types';
 
 function Listing() {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
-  const [userRoomList, setUserRoomList] = useState([]);
+  const [userRoomList, setUserRoomList] = useState<IAiGeneratedImage[]>([]);
   useEffect(() => {
     userDetail && getUsersRoomList();
   }, [userDetail]);
@@ -19,9 +20,7 @@ function Listing() {
     const result = await db
       .select()
       .from(AiGeneratedImage)
-      .where(
-        eq(AiGeneratedImage.userEmail, userDetail?.email)
-      );
+      .where(eq(AiGeneratedImage.userEmail, userDetail?.email));
     setUserRoomList(result);
   };
 
@@ -36,13 +35,13 @@ function Listing() {
       {userRoomList?.length == 0 ? (
         <EmptyState />
       ) : (
-        <div className='mt-10'>
-          <h2 className='text-primary mb-5'>My rooms area</h2>
-          <div className='grid grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center'>
-          {userRoomList?.map((room, idx) => (
-            <RoomDesignCard key={`roomDesign_${idx}`} room={room} />
-          ))}
-        </div>
+        <div className="mt-10">
+          <h2 className="text-primary mb-5">My rooms area</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 items-center justify-center">
+            {userRoomList?.map((room, idx) => (
+              <RoomDesignCard key={`myRoomDesign_${idx}`} room={room} />
+            ))}
+          </div>
         </div>
       )}
     </div>
