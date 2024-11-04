@@ -50,7 +50,6 @@ function Page() {
       price: 9.99,
     },
   ];
-  console.log(selectedOptions);
   const router = useRouter();
   const onPaymentSuccess = async () => {
     const result = await db
