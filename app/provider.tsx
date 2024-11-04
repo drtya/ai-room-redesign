@@ -17,7 +17,6 @@ function Provider({ children }:{children:ReactNode}) {
     });
     setUserDetail(dataResult.data.result);
   };
-  console.log(userDetail);
 
   return (
     <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>

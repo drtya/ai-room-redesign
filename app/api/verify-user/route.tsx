@@ -19,8 +19,6 @@ export async function POST(req: NextRequest) {
           imageUrl: user?.imageUrl,
         })
         .returning({ id: Users.id });
-        console.log(saveResult[0]);
-        
       return NextResponse.json({ result: saveResult[0] });
     }
     return NextResponse.json({ result: userInfo[0] });
